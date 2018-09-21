@@ -26,7 +26,7 @@ from bokeh.layouts import widgetbox
 from bokeh.tile_providers import CARTODBPOSITRON
 
 #set up data
-df = pd.read_csv('trainee_costs.csv')
+df = pd.read_csv('data/random_data.csv')
 del df['Unnamed: 0']
 del df['index']
 data = df[['year', 'locationid', 'costs', 'trainees_total', 'trainees_pass', 'latitude', 'longitude']]
@@ -34,18 +34,18 @@ data = data.set_index('year')
 
 source1 = ColumnDataSource(dict(
     x = data.loc[2000].trainees_total,
-    y = data.loc[2000].costs,
+    y = data.loc[2000].costs,    
     location=data.loc[2000].locationid,
 ))
 
 source2 = ColumnDataSource(dict(
     x = data.trainees_total,
-    y = data.costs,
+    y = data.costs,    
     location=data.locationid,
 ))
 
 #map data
-df_map = pd.read_csv('major_airports.csv')
+df_map = pd.read_csv('data/major_airports.csv')
 
 map_source = ColumnDataSource(
     data=dict(
@@ -108,27 +108,27 @@ map_options = GMapOptions(lat=37.0902, lng=-95.7129, map_type="roadmap", zoom=3)
 map_ = gmap(googleAPI, map_options)
 
 map_.circle(
-    x="lon",
-    y="lat",
-    size=5,
-    fill_color="blue",
-    fill_alpha=0.8,
+    x="lon", 
+    y="lat", 
+    size=5, 
+    fill_color="blue", 
+    fill_alpha=0.8, 
     source=map_source,
-
+    
 )
 
 def update_slider(attr, old, new):
     year = new
     new_data = dict(
         x = data.loc[year].trainees_total,
-        y = data.loc[year].costs,
+        y = data.loc[year].costs,    
         location=data.loc[year].locationid,
     )
     source1.data = new_data
     p1.title.text = str(year)
 
 def update_buttons(attr, old, new):
-
+    
     # print('test_list', radio_button_group.labels[new])
     # print('type', type(radio_button_group.labels[new]))
     # print('dataframe ', data.head())
